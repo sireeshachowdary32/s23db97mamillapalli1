@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+  - let results=[{gallery_name:"Family",size :"Large",cost:1000},{gallery_name:"Friends",size :"Medium",cost:500},{gallery_name:"Family&Friends",size :"Large",cost:1000}]
+  div(class="container-fluid")
+  div(class="row")
+  each value,index in results
+    div(class="col-sm-2" onclick=`buy(${index})`)  #{value.gallery_name} Gallery, size is #{value.size}, with #{value.cost}
+  script. 
+    function buy(index)
+    {
+      alert(`You purchased Item ${index+1}`)
+    }

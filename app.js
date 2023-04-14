@@ -4,16 +4,18 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var galleryRouter = require('./routes/gallery');
 var boardRouter = require('./routes/board');
 var selectorRouter = require('./routes/selector');
+var resourceRouter = require('./routes/resource');
 
 
 
+var Gallery = require("./models/gallery");
 
-var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -27,12 +29,29 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+require('dotenv').config();
+const connectionString =
+process.env.MONGO_CON
+mongoose = require('mongoose');
+mongoose.connect(connectionString,
+{useNewUrlParser: true,
+useUnifiedTopology: true});
+
+//Get the default connection
+var db = mongoose.connection;
+//Bind connection to error event
+db.on('error', console.error.bind(console, 'MongoDB connectionerror:'));
+db.once("open", function(){
+console.log("Connection to DB succeeded")});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/gallery', galleryRouter);
 app.use('/board', boardRouter);
 app.use('/selector', selectorRouter);
+app.use('/resource', resourceRouter);
+
+
 
 
 
@@ -52,5 +71,44 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// We can seed the collection if needed onserver start
+async function recreateDB(){
+ // Delete everything
+ await Gallery.deleteMany();
+ let instance1 = new
+Gallery({gallery_name:"family", size:'large',
+cost:25.4});
+instance1.save().then(doc=>{
+
+  console.log("First object saved")}
+
+  ).catch(err=>{
+
+  console.error(err)});
+ let instance2 = new
+Gallery({gallery_name:"friends", size:'large',
+cost:25.4});
+instance2.save().then(doc=>{
+
+  console.log("First object saved")}
+
+  ).catch(err=>{
+
+  console.error(err)});
+ let instance3 = new
+Gallery({gallery_name:"family-friends", size:'large',
+cost:25.4});
+instance3.save().then(doc=>{
+
+  console.log("First object saved")}
+
+  ).catch(err=>{
+
+  console.error(err)});
+}
+let reseed = true;
+if (reseed) { recreateDB();}
+
 
 module.exports = app;

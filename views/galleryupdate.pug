@@ -1,0 +1,45 @@
+extends layout
+
+block content
+  h1= title
+
+  if (toShow == null)
+    h2 No instance to delete
+  else
+    - let galleryid = toShow._id
+    - let gallery_name = toShow.gallery_name
+    - let size = toShow.size
+    - let cost= toShow.cost
+    div.row(class='mb-2')
+      div.mr-1 ID is
+      div #{galleryid}
+      - let actionid = "/resource/gallery/update/" + galleryid
+      form(id='GalleryForm', action= actionid, method="PUT")
+        div.form-group
+          label.galleryAttr(for='gallery_name') Gallery gallery_name
+          input#gallery_name(type='text', name='gallery_name', value= gallery_name )
+        div.form-group
+          label.galleryAttr(for='size') gallery size
+          input#size(type='text', name='size', value= size )
+        div.form-group
+          label.galleryAttr(for='cost') gallery cost
+          input#cost(type='number', name='cost', value= cost )
+        input(type="submit")
+    script.
+      document.forms['GalleryForm'].addEventListener('submit', (event) => {
+        event.preventDefault();
+        // TODO do something here to show user that form is being submitted
+        fetch(event.target.action, {
+          method: 'PUT',
+          body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+        }).then((resp) => {
+          console.log("hi")
+          return resp.json(); // or resp.text() or whatever the server sends
+        }).then((body) => {
+          alert("Update succeded")
+          // TODO handle body
+        }).catch((error) => {
+          // TODO handle error
+          alert("Update failed " + error )
+        });
+      });

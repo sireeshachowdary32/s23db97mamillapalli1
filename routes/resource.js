@@ -8,11 +8,11 @@ var gallery_controller = require('../controllers/gallery');
 router.get('/', api_controller.api);
 /// COSTUME ROUTES ///
 // POST request for creating a Costume.
-router.post('/gallery', gallery_controller.gallery_create_post);
+router.post('/gallery/create', gallery_controller.gallery_create_post);
 // DELETE request to delete Costume.
 router.delete('/gallery/:id', gallery_controller.gallery_delete);
 // PUT request to update Costume.
-router.put('/gallery/:id', gallery_controller.gallery_update_put);
+router.put('/gallery/update/:id', gallery_controller.gallery_update_put);
 // GET request for one Costume.
 router.get('/gallery/:id', gallery_controller.gallery_detail);
 // GET request for list of all Costume items.

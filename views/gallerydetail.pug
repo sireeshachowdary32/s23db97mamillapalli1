@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  h1= title
+  if (toShow == null)
+    h2 No instance to delete
+  else
+    - let galleryid = toShow._id
+    - let gallery_name = toShow.gallery_name
+    - let size = toShow.size
+    - let cost = toShow.cost
+    div
+      div.row
+        div(class='galleryAttr mr-3') Shoe ID:
+        div #{galleryid}
+      div.row
+        div(class='galleryAttr mr-3') Gallery Name:
+        div #{gallery_name}
+      div.row
+        div(class='galleryAttr mr-3') Size:
+        div #{size}
+      div.row
+        div(class='galleryAttr mr-3') Cost:
+        div #{cost}
